@@ -7,7 +7,7 @@ output:
 
 
 ## Loading and preprocessing the data
-
+**Reading the data into activity_data and checking the type of data present. Converting the date from character to data type to make processing easier**
 
 ```r
         library(dplyr)
@@ -49,7 +49,7 @@ output:
 
 
 ## What is mean total number of steps taken per day?
-
+**The following code aggregates the number of steps taken according to the date and draws a histogram using base plotting system. Further it prints the mean and median of the steps taken per day. **
 
 ```r
         activity_steps_day <- aggregate(steps ~ date, data = activity_data, FUN = sum, na.rm = TRUE)
@@ -78,6 +78,7 @@ output:
 
 
 ## What is the average daily activity pattern?
+**The following code aggregates the number of steps taken according to the interval and draws a x-y plot using base plotting system. Further it prints the 5-minute interval which has the highest average number of steps **
 
 ```r
         activity_steps_interval <- aggregate(steps ~ interval, data = activity_data, FUN = mean, na.rm = TRUE)
@@ -101,7 +102,7 @@ output:
 
 
 ## Imputing missing values
-
+**The following code calculates the mean of the non missing values for each interval. It divides the activity data set into 2 data frames - one with all missing values and one with all non-missing values. After dividing each interval as a factor, the values calculated using non-missing values is added to the data frame of missing values for the corresponding interval using levels. The values are rounded off and converted to integer. The 2 data frame are thus combined back again. Updated number of missing values, mean and median is printed. A histogram containing the Number of Steps per day is drawn using the base plotting system**
 
 ```r
         print(paste("Total Number of NA Values in the dataset = ",sum(is.na(activity_data$steps))))
@@ -153,7 +154,8 @@ output:
 ## [1] "Median of Number of Steps taken per day 10762"
 ```
 
-## Are there differences in activity patterns between weekdays and weekends?
+## Are there differences in activity patterns between weekdays and weekend
+**The following code creates a factor variable for weekdays and weekends. The total number of steps are calculated for each interval separately for weekend and weekday. ggplot is used to create this plot for weekend/weekday using facet_grid **
 
 
 ```r

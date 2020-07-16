@@ -368,6 +368,7 @@ summary {
 
 <div id="loading-and-preprocessing-the-data" class="section level2">
 <h2>Loading and preprocessing the data</h2>
+<p><strong>Reading the data into activity_data and checking the type of data present. Converting the date from character to data type to make processing easier</strong></p>
 <pre class="r"><code>        library(dplyr)</code></pre>
 <pre><code>## 
 ## Attaching package: &#39;dplyr&#39;</code></pre>
@@ -387,6 +388,7 @@ summary {
 </div>
 <div id="what-is-mean-total-number-of-steps-taken-per-day" class="section level2">
 <h2>What is mean total number of steps taken per day?</h2>
+<p><strong>The following code aggregates the number of steps taken according to the date and draws a histogram using base plotting system. Further it prints the mean and median of the steps taken per day. </strong></p>
 <pre class="r"><code>        activity_steps_day &lt;- aggregate(steps ~ date, data = activity_data, FUN = sum, na.rm = TRUE)
         hist(activity_steps_day$steps, main=&quot;Steps Per Day&quot;, 
              xlab=&quot;Number of Steps per day&quot;, ylab=&quot;Frequency&quot;, col=&quot;blue&quot;)</code></pre>
@@ -398,6 +400,7 @@ summary {
 </div>
 <div id="what-is-the-average-daily-activity-pattern" class="section level2">
 <h2>What is the average daily activity pattern?</h2>
+<p><strong>The following code aggregates the number of steps taken according to the interval and draws a x-y plot using base plotting system. Further it prints the 5-minute interval which has the highest average number of steps </strong></p>
 <pre class="r"><code>        activity_steps_interval &lt;- aggregate(steps ~ interval, data = activity_data, FUN = mean, na.rm = TRUE)
         with(activity_steps_interval, {
                 plot(activity_steps_interval$steps~activity_steps_interval$interval, type=&quot;l&quot;,
@@ -411,6 +414,7 @@ summary {
 </div>
 <div id="imputing-missing-values" class="section level2">
 <h2>Imputing missing values</h2>
+<p><strong>The following code calculates the mean of the non missing values for each interval. It divides the activity data set into 2 data frames - one with all missing values and one with all non-missing values. After dividing each interval as a factor, the values calculated using non-missing values is added to the data frame of missing values for the corresponding interval using levels. The values are rounded off and converted to integer. The 2 data frame are thus combined back again. Updated number of missing values, mean and median is printed. A histogram containing the Number of Steps per day is drawn using the base plotting system</strong></p>
 <pre class="r"><code>        print(paste(&quot;Total Number of NA Values in the dataset = &quot;,sum(is.na(activity_data$steps))))</code></pre>
 <pre><code>## [1] &quot;Total Number of NA Values in the dataset =  2304&quot;</code></pre>
 <pre class="r"><code>        activity_steps_interval &lt;- tapply(activity_data$steps, activity_data$interval, mean, na.rm = TRUE)
@@ -434,8 +438,9 @@ summary {
 <pre class="r"><code>        print(paste(&quot;Median of Number of Steps taken per day&quot;,median(activity_steps_day$steps,na.rm = TRUE)))</code></pre>
 <pre><code>## [1] &quot;Median of Number of Steps taken per day 10762&quot;</code></pre>
 </div>
-<div id="are-there-differences-in-activity-patterns-between-weekdays-and-weekends" class="section level2">
-<h2>Are there differences in activity patterns between weekdays and weekends?</h2>
+<div id="are-there-differences-in-activity-patterns-between-weekdays-and-weekend" class="section level2">
+<h2>Are there differences in activity patterns between weekdays and weekend</h2>
+<p><strong>The following code creates a factor variable for weekdays and weekends. The total number of steps are calculated for each interval separately for weekend and weekday. ggplot is used to create this plot for weekend/weekday using facet_grid </strong></p>
 <pre class="r"><code>        weekdays_list &lt;- c(&#39;Monday&#39;, &#39;Tuesday&#39;, &#39;Wednesday&#39;, &#39;Thursday&#39;, &#39;Friday&#39;)
         activity_data$dayType &lt;- factor((weekdays(activity_data$date) %in% weekdays_list), 
                            levels=c(FALSE, TRUE), labels=c(&#39;weekend&#39;, &#39;weekday&#39;))
